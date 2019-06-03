@@ -15,6 +15,9 @@ namespace Kalaidina
     {
         Class1 variant;
         bool[] exercise;
+        int Count_of_generated = 0;
+        string inpath = "../../resourses";
+        string outpath = "../../generated";
 
         public Form1()
         {
@@ -24,35 +27,38 @@ namespace Kalaidina
             {
                 exercise[i] = false;
             }
-            variant = new Class1("../../resourses", "../../generated");
+            variant = new Class1(inpath, outpath);
         }
 
         private void Generate_button_Click(object sender, EventArgs e)
         {
             Success_textBox.Clear();
-            int i = 0;
-            for (; i < exercise.Length && exercise[i] == false; i++) ;
-            switch (i)
+            bool generateError = false; //семафор ошибки
+            if (!variant.GenerateVariant(out List<string> var, out List<string> ans))
+                generateError = true;
+            if(generateError)
             {
-                case 5:
-                    {
-                        if (variant.Generate_6())
-                            Success_textBox.Text = "Генерация прошла успешно";
-                        else
-                            Success_textBox.Text = "При генерации возникла ошибка";
-                        break;
-                    }
+                Success_textBox.Text = "При генерации возникла ошибка";
             }
-        }
-
-        private void SetEx(object sender, EventArgs e)
-        {
-            string ss = (sender as RadioButton).Text;
-            int index = Convert.ToInt32(ss[ss.Length - 1]) - 49;
-            if ((sender as RadioButton).Checked)
-                exercise[index] = true;
             else
-                exercise[index] = false;
+            {
+                Success_textBox.Text = "Генерация прошла успешно";
+                using (StreamWriter sr = new StreamWriter(outpath + "/variant"+Count_of_generated.ToString()+".txt"))
+                {
+                    foreach(string s in var)
+                    {
+                        sr.WriteLine(s);
+                    }
+                }
+                using (StreamWriter sr = new StreamWriter(outpath + "/answers"+Count_of_generated.ToString()+".txt"))
+                {
+                    foreach(string s in ans)
+                    {
+                        sr.WriteLine(s);
+                    }
+                }
+                Count_of_generated++;
+            }
         }
     }
 }

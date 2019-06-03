@@ -46,9 +46,34 @@ namespace Kalaidina
             }
         }
 
-        public bool Generate_6()
+        public bool GenerateVariant(out List<string> variant, out List<string> answers)
+        {
+            variant = new List<string>();
+            answers = new List<string>();
+            bool not_error = true;
+
+            if (Generate_6(out string cond6, out string answ6))
+            {
+                variant.Add(cond6);
+                answers.Add(answ6);
+            }
+            else
+            {
+                not_error = false;
+            }
+            return not_error;
+        }
+
+        //private bool Generate_4(out string condition, out string answer)
+        //{
+
+        //}
+
+        private bool Generate_6(out string condition, out string answer)
         {
             bool not_error = true;
+            condition = "";
+            answer = "";
             not_error = ReadTable(resPath + "/laplass_table.txt");
             if(not_error)
             {
@@ -67,18 +92,12 @@ namespace Kalaidina
                         lime = lime.Replace("{1}", electCount.ToString());
                         lime = lime.Replace("{2}", dole.ToString());
                         lime = lime.Replace("{3}", razz.ToString());
-                        using (StreamWriter sr = new StreamWriter(outPath + "/6out.txt"))
-                        {
-                            sr.WriteLine(lime);
-                        }
+                        condition = lime;
                     }
                     int i = 0;
                     while (i < laplass_first.Count && laplass_first[i] < num)
                         i++;
-                    using (StreamWriter sr = File.AppendText(outPath + "/otvety.txt"))
-                    {
-                        sr.WriteLine("Ответ на получившуюся задачу 6: " + laplass_second[i].ToString());
-                    }
+                    answer = "Ответ на задачу 6: " + laplass_second[i].ToString();
                     return not_error;
                 }
                 catch
@@ -95,4 +114,5 @@ namespace Kalaidina
         }
     }
 }
+
 ///jklj
