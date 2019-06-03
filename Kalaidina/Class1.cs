@@ -68,7 +68,37 @@ namespace Kalaidina
             variant = new List<string>();
             answers = new List<string>();
             bool not_error = true;
-            if(Generate_4(out string cond4, out string answ4))
+            if (Generate_1(out string cond1, out string answ1))
+            {
+                variant.Add(cond1);
+                answers.Add(answ1);
+            }
+            else
+            {
+                not_error = false;
+                return not_error;
+            }
+            if (Generate_2(out string cond2, out string answ2))
+            {
+                variant.Add(cond2);
+                answers.Add(answ2);
+            }
+            else
+            {
+                not_error = false;
+                return not_error;
+            }
+            if (Generate_3(out string cond3, out string answ3))
+            {
+                variant.Add(cond3);
+                answers.Add(answ3);
+            }
+            else
+            {
+                not_error = false;
+                return not_error;
+            }
+            if (Generate_4(out string cond4, out string answ4))
             {
                 variant.Add(cond4);
                 answers.Add(answ4);
@@ -99,6 +129,121 @@ namespace Kalaidina
                 return not_error;
             }
             return not_error;
+        }
+
+        private bool Generate_1(out string condition, out string answer)
+        {
+            bool not_error = true;
+            condition = "";
+            answer = "";
+            try
+            {
+                Random rand = new Random();
+                int n = rand.Next(1, 10);
+                int fal = rand.Next(11, 20);
+               
+                using (StreamReader sr = new StreamReader(resPath + "/1shtamp.txt", Encoding.Default))
+                {
+                    string lime = sr.ReadLine();
+                    lime = lime.Replace("{1}", n.ToString());
+                    lime = lime.Replace("{2}", fal.ToString());
+                    lime = lime.Replace("{3}", n.ToString());
+                    lime = lime.Replace("{4}", fal.ToString());
+                    condition = "1. " + lime;
+                }
+                if (not_error)
+                {
+                    int a = fal - n;
+                    answer = "1. Число возможных комбинаций: " + fal.ToString() + "!/(" + n.ToString() + "!*" + a.ToString() + "!)";
+                }
+                return not_error;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        private bool Generate_2(out string condition, out string answer)
+        {
+            bool not_error = true;
+            condition = "";
+            answer = "";
+            try
+            {
+                Random rand = new Random();
+                int n = rand.Next(3, 10);
+                double fal = rand.Next(10, 50) * 0.01;
+                int b = rand.Next(1, n - 1);
+
+                using (StreamReader sr = new StreamReader(resPath + "/2shtamp.txt", Encoding.Default))
+                {
+                    string lime = sr.ReadLine();
+                    lime = lime.Replace("{1}", n.ToString());
+                    lime = lime.Replace("{2}", fal.ToString());
+                    lime = lime.Replace("{3}", n.ToString());
+                    lime = lime.Replace("{4}", b.ToString());
+                    condition = "2. " + lime;
+                }
+                if (not_error)
+                {
+                    double pr = 1;
+                    for(int i = 0; i < n; i++)
+                    {
+                        pr *= fal;
+                    }
+                    pr = Math.Round(pr, 4, MidpointRounding.AwayFromZero);
+                    answer = "2. Искомые вероятности: а) " + pr.ToString() + " б) ";
+                    double no = 1 - fal;
+                    pr = 1;
+                    for(int i = 0; i < b; i++)
+                    {
+                        pr *= no;
+                    }
+                    pr = Math.Round(pr, 5, MidpointRounding.AwayFromZero);
+                    answer += pr.ToString();
+                }
+                return not_error;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        private bool Generate_3(out string condition, out string answer)
+        {
+            bool not_error = true;
+            condition = "";
+            answer = "";
+            try
+            {
+                Random rand = new Random();
+                double n = rand.Next(60, 95) * 0.01;
+                double fal = rand.Next(70, 90) * 0.01;
+
+                using (StreamReader sr = new StreamReader(resPath + "/3shtamp.txt", Encoding.Default))
+                {
+                    string lime = sr.ReadLine();
+                    lime = lime.Replace("{1}", n.ToString());
+                    lime = lime.Replace("{2}", fal.ToString());
+                    condition = "3. " + lime;
+                }
+                if (not_error)
+                {
+                    double a = 1 - n;
+                    double b = 1 - fal;
+                    double res = n * b + fal * b;
+                    answer = "3. Вероятность того, что сработает только один сигнализатор: " + res.ToString();
+                }
+                return not_error;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private bool Generate_4(out string condition, out string answer)
@@ -266,5 +411,3 @@ namespace Kalaidina
         }
     }
 }
-
-///jklj
