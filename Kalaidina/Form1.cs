@@ -43,14 +43,14 @@ namespace Kalaidina
             else
             {
                 Success_textBox.Text = "Генерация прошла успешно";
-                using (StreamWriter sr = new StreamWriter(outpath + "/variant"+Count_of_generated.ToString()+".txt"))
+                using (StreamWriter sr = new StreamWriter(outpath + "/variant_"+Count_of_generated.ToString()+".txt"))
                 {
                     foreach(string s in var)
                     {
                         sr.WriteLine(s);
                     }
                 }
-                using (StreamWriter sr = new StreamWriter(outpath + "/answers"+Count_of_generated.ToString()+".txt"))
+                using (StreamWriter sr = new StreamWriter(outpath + "/answers_"+Count_of_generated.ToString()+".txt"))
                 {
                     foreach(string s in ans)
                     {
